@@ -8,7 +8,7 @@
 ## 🚦 目前狀態
 - L1 本地藍圖已建立：`AGENTS.md`＋`handoff.md`
 - L2 GitHub 私有 repo：`peterhupc/oc_maps`，已推送（用 Windows GCM 存的 PAT 建立並推送）
-- L3 Obsidian 筆記：`oc_maps/專案工作流程.md`
+- L3 Obsidian 筆記：`C:\Users\peter\Obsidian\oc_maps\專案工作流程.md`（已從 ak-demo vault 移出至 Obsidian 根目錄）
 
 ## ➡️ 下一步
 1. 規劃主專案架構與資料夾分類（區域地圖 → 分支）
@@ -19,6 +19,6 @@
 - 所有回應與文件使用繁體中文
 
 ## 🕐 最後更新
-- 時間：2026-08-02 01:05
+- 時間：2026-08-02 01:20
 - 更新者：opencode @ PBHOME-X1G12
 - Git push：✅ 已推（peterhupc/oc_maps，master）
