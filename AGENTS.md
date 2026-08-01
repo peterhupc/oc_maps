@@ -29,7 +29,7 @@ oc_maps/
 |------|------|------|---------|
 | L1 | 本地（雲端硬碟資料夾） | `AGENTS.md`＋`handoff.md` | 每個 session |
 | L2 | GitHub | [peterhupc/oc_maps](https://github.com/peterhupc/oc_maps)（私有） | 指定時 |
-| L3 | Obsidian | Obsidian 根目錄/oc_maps/專案工作流程.md（已移出 ak-demo，不在 vault 內） | 有需要時 |
+| L3 | Obsidian | Obsidian 根目錄/oc_maps（獨立 vault）/專案工作流程.md | 有需要時 |
 
 ## 工作約定
 - 任何 Agent、任何電腦：**開工先讀 `handoff.md`，收工必更新 `handoff.md`**
