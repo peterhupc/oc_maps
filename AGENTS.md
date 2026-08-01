@@ -28,7 +28,7 @@ oc_maps/
 | 層級 | 平台 | 位置 | 讀取時機 |
 |------|------|------|---------|
 | L1 | 本地（雲端硬碟資料夾） | `AGENTS.md`＋`handoff.md` | 每個 session |
-| L2 | GitHub | 未啟用（token 無法建 repo，待補） | 指定時 |
+| L2 | GitHub | [peterhupc/oc_maps](https://github.com/peterhupc/oc_maps)（私有） | 指定時 |
 | L3 | Obsidian | oc_maps/專案工作流程.md | 有需要時 |
 
 ## 工作約定
