@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPinned } from 'lucide-react'
 import type { FilterState, FoodPlace } from './types/food'
@@ -75,6 +75,16 @@ export default function App() {
   )
 
   const allLoading = loading || !mapsLoaded
+
+  // 首載：maps 就緒後自動以台北為中心搜尋一次（讓地圖一開始就有旗標）
+  useEffect(() => {
+    if (!mapsLoaded) return
+    const next: FilterState = { ...filtersRef.current, center: DEFAULT_CENTER }
+    setCenter(DEFAULT_CENTER)
+    setFilters(next)
+    void search(next)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapsLoaded])
 
   return (
     <div className="app">

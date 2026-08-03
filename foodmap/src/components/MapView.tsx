@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FoodPlace } from '../types/food'
 import { loadMaps } from '../services/mapsLoader'
 
@@ -10,12 +10,19 @@ interface MapViewProps {
   onCenterChange: (c: { lat: number; lng: number }) => void
 }
 
-const PIN_ICON = encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='36' viewBox='0 0 28 36'><path d='M14 0C6.3 0 0 6.3 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.3 21.7 0 14 0z' fill='%23e8590c'/><circle cx='14' cy='14' r='5' fill='white'/></svg>`
-)
-const PIN_ICON_ACTIVE = encodeURIComponent(
-  `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='36' viewBox='0 0 28 36'><path d='M14 0C6.3 0 0 6.3 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.3 21.7 0 14 0z' fill='%231971c2'/><circle cx='14' cy='14' r='5' fill='white'/></svg>`
-)
+const flagIcon = (body: string, border: string, pole: string, pennant: string): string =>
+  'data:image/svg+xml;charset=UTF-8,' +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='36' viewBox='0 0 28 36'>
+  <path d='M14 35.5 5 20.3C3.3 17.3 2.5 14.1 2.5 11.2 2.5 5.1 7.7.8 14 .8c6.3 0 11.5 4.3 11.5 10.4 0 2.9-.8 6.1-2.5 9.1z' fill='${body}' stroke='${border}' stroke-width='2'/>
+  <rect x='11.6' y='5' width='1.8' height='11' rx='.9' fill='${pole}'/>
+  <path d='M13.4 5.4 21.4 7.8 13.4 10.2z' fill='${pennant}'/>
+</svg>`
+  )
+
+// 預設：白底＋橘旗；選中：藍底＋白旗
+const PIN_ICON = flagIcon('#ffffff', '#e8590c', '#495057', '#e8590c')
+const PIN_ICON_ACTIVE = flagIcon('#1971c2', '#ffffff', '#ffffff', '#ffffff')
 
 function infoContent(place: FoodPlace): string {
   const photo = place.photos?.[0]
@@ -38,6 +45,7 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
   const markersRef = useRef<{ id: string; marker: google.maps.Marker }[]>([])
   const infoRef = useRef<google.maps.InfoWindow | null>(null)
   const placesRef = useRef<FoodPlace[]>([])
+  const [mapReady, setMapReady] = useState(false)
   placesRef.current = places
 
   useEffect(() => {
@@ -57,6 +65,7 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
         const c = map.getCenter()
         if (c) onCenterChange({ lat: c.lat(), lng: c.lng() })
       })
+      setMapReady(true)
     })
     return () => {
       cancelled = true
@@ -70,14 +79,15 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
     map.panTo(center)
   }, [center])
 
+  // 渲染旗標：places 或地圖就緒時
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
     const info = infoRef.current
-    if (!info) return
+    if (!map || !info || !mapReady) return
 
     markersRef.current.forEach((m) => m.marker.setMap(null))
     markersRef.current = []
+    info.close()
 
     for (const place of places) {
       const marker = new google.maps.Marker({
@@ -95,13 +105,25 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
       markersRef.current.push({ id: place.place_id, marker })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [places, selectedId])
+  }, [places, mapReady])
 
+  // 選中狀態只換旗標顏色，不重建 marker
+  useEffect(() => {
+    for (const m of markersRef.current) {
+      m.marker.setIcon(m.id === selectedId ? PIN_ICON_ACTIVE : PIN_ICON)
+    }
+  }, [selectedId])
+
+  // 選中時 panTo 並開資訊窗
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
     const info = infoRef.current
-    if (!info) return
+    if (!map || !info || !mapReady) return
+
+    if (!selectedId) {
+      info.close()
+      return
+    }
 
     const found = markersRef.current.find((m) => m.id === selectedId)
     if (!found) return
@@ -111,7 +133,7 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
     info.setContent(infoContent(place))
     info.open({ map, anchor: found.marker })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId])
+  }, [selectedId, mapReady])
 
   return <div ref={ref} className="map-canvas" />
 }
