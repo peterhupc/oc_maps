@@ -8,15 +8,20 @@
 ## 關鍵時程
 <!-- 格式：- 事件名稱：日期（說明）；沒有就留白 -->
 - foodmap 上線 GitHub Pages：2026-08-03（CI 自動部署 + API key secret 就緒）
-- foodmap 功能改版：2026-08-03（拖曳重搜、圖釘突顯＋照片、25 類分組、收藏頁籤、跨裝置 Firebase 同步；待 commit）
+- foodmap 功能改版：2026-08-03（拖曳重搜、圖釘突顯＋照片、25 類分組、收藏頁籤、跨裝置 Firebase 同步）
+- 正式站登入開通：2026-08-04（7 secrets 補齊、authorized domains、Google 登入成功）
+- foodmap 排序下拉：2026-08-04（距離／評分／價位／Google 預設）
+- 專案清理：2026-08-04（README 重寫、移除過時 RDQ 規格與空殼 .firebaserc）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
 - [x] foodmap 分支：CI 部署 GitHub Pages 上線（https://peterhupc.github.io/oc_maps/）
 - [x] foodmap 三問題改版：拖曳＋拖動重搜、點列表突顯地圖＋照片資訊窗、25 類分組、收藏清單頁籤
 - [x] 跨裝置收藏同步：Firebase 專案 oc-maps-foodmap（Auth Google＋Firestore 規則已部署、SDK 已接）
-- [x] 正式站同步開通：CI 已部署新版（commit 4153b40；GitHub secrets 尚未加 → 正式站登入暫時停用，安全降級）
+- [x] 正式站登入開通：7 個 GitHub secrets 補齊、authorized domains 加入 peterhupc.github.io、Google 登入驗證成功
+- [x] foodmap 排序下拉：距離／評分／價位／Google 預設（commit 74b284c）
 - [x] 本機驗證後 commit＋push（foodmap 改版＋Firebase＋workflow）
+- [x] 專案清理：README 重寫、刪過時 RDQ 規格與空殼 .firebaserc（commit df9ca2a）
 - [ ] 階段一：規劃主專案架構與資料夾分類（區域地圖 → 分支）
 - [ ] 階段二：
 - [ ] 階段三：
@@ -31,11 +36,15 @@ oc_maps/
 ├── firestore.rules                # Firestore 安全規則（收藏僅本人可讀寫）
 ├── .github/workflows/deploy.yml   # foodmap CI 部署（官方 deploy-pages）
 ├── .gitignore
+├── rdq/                           # RDQ 需求規格卡（保留最新排序規格，舊卡已刪）
+│   └── RDQ-spec-foodmap-sort-20260804.md
 └── foodmap/                       # foodmap 區域地圖分支（獨立 Vite 專案）
+    ├── README.md                  # 專案版 README（功能／開發指令／env 對照／部署）
     ├── src/                       # mapsLoader、foodSource、components、hooks、utils、lib
     │   ├── lib/firebase.ts        # Firebase 惰性初始化（未設 env 時安全停用）
     │   ├── hooks/useFavorites.ts  # 收藏（本機＋Firebase 合併同步）
-    │   └── utils/categoryMap.ts   # 25 類分組（料理菜系＋餐廳型態）
+    │   ├── utils/categoryMap.ts   # 25 類分組（料理菜系＋餐廳型態）
+    │   └── utils/sortPlaces.ts    # 結果排序（距離／評分／價位／Google 預設）
     └── .env.local                 # 本機測試用 API key＋Firebase 設定（gitignored，不入 repo）
 ```
 
