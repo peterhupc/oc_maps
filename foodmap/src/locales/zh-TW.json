@@ -1,0 +1,37 @@
+{
+  "app": {
+    "title": "食圖 FoodMap",
+    "subtitle": "找附近的在地美食"
+  },
+  "search": {
+    "placeholder": "輸入地址或區域，例如：台北市大安區",
+    "button": "搜尋"
+  },
+  "filter": {
+    "radius": "搜尋半徑",
+    "minRating": "最低評分",
+    "price": "價位",
+    "openNow": "只顯示營業中",
+    "categories": "美食類別",
+    "apply": "套用"
+  },
+  "list": {
+    "loading": "搜尋中…",
+    "empty": "沒有找到符合條件的店家，請調整條件再試",
+    "noApiKey": "尚未設定 Google Maps API Key，請在 foodmap/.env.local 設定 VITE_GMAPS_KEY",
+    "resultCount": "共 {{count}} 間店",
+    "open": "營業中",
+    "closed": "已打烊",
+    "noPhotos": "無照片",
+    "favorites": "我的收藏"
+  },
+  "categories": {
+    "街邊小吃": "街邊小吃",
+    "高檔餐廳": "高檔餐廳",
+    "日式": "日式",
+    "韓式": "韓式",
+    "南美燒烤": "南美燒烤",
+    "咖啡輕食": "咖啡輕食",
+    "素食": "素食"
+  }
+}
