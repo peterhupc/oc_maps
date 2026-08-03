@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPinned } from 'lucide-react'
 import type { FilterState, FoodPlace } from './types/food'
@@ -6,22 +6,24 @@ import { CATEGORIES } from './utils/categoryMap'
 import MapView from './components/MapView'
 import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
-import PlaceList from './components/PlaceList'
+import PlaceList, { type ListView } from './components/PlaceList'
 import { useFoodSearch } from './hooks/useFoodSearch'
 import { useJsApi } from './hooks/useJsApi'
 import { useFavorites } from './hooks/useFavorites'
 import { geocodeAddress } from './services/geocode'
 
 const DEFAULT_CENTER = { lat: 25.033, lng: 121.565 } // 台北
+const MAP_MOVE_DEBOUNCE_MS = 600
 
 export default function App() {
   const { t } = useTranslation()
   const { loaded: mapsLoaded, error: mapsError } = useJsApi()
   const { places, loading, error, search } = useFoodSearch()
-  const { favorites, toggle } = useFavorites()
+  const { favorites, toggle, login, logout, user } = useFavorites()
 
   const [center, setCenter] = useState(DEFAULT_CENTER)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [listView, setListView] = useState<ListView>('all')
   const [filters, setFilters] = useState<FilterState>({
     center: null,
     radiusKm: 3,
@@ -31,21 +33,27 @@ export default function App() {
     openNow: false,
   })
 
+  const filtersRef = useRef(filters)
+  filtersRef.current = filters
+  const moveTimerRef = useRef<number | null>(null)
+
   const handleSearch = useCallback(
     async (address: string) => {
       const loc = await geocodeAddress(address)
       if (!loc) return
-      const next: FilterState = { ...filters, center: loc }
+      const next: FilterState = { ...filtersRef.current, center: loc }
       setCenter(loc)
       setFilters(next)
+      setSelectedId(null)
       await search(next)
     },
-    [filters, search]
+    [search]
   )
 
   const handleFilterChange = useCallback(
     (next: FilterState) => {
       setFilters(next)
+      setSelectedId(null)
       if (next.center) void search(next)
     },
     [search]
@@ -55,20 +63,39 @@ export default function App() {
     setSelectedId(place.place_id)
   }, [])
 
-  const onMapMove = useCallback((c: { lat: number; lng: number }) => {
-    setCenter(c)
-  }, [])
+  const onMapMove = useCallback(
+    (c: { lat: number; lng: number }) => {
+      const next: FilterState = { ...filtersRef.current, center: c }
+      setFilters(next)
+      setSelectedId(null)
+      if (moveTimerRef.current) window.clearTimeout(moveTimerRef.current)
+      moveTimerRef.current = window.setTimeout(() => void search(next), MAP_MOVE_DEBOUNCE_MS)
+    },
+    [search]
+  )
 
   const allLoading = loading || !mapsLoaded
 
   return (
     <div className="app">
       <header className="header">
-        <h1>
-          <MapPinned size={22} />
-          {t('app.title')}
-        </h1>
-        <span className="subtitle">{t('app.subtitle')}</span>
+        <div className="header-main">
+          <h1>
+            <MapPinned size={22} />
+            {t('app.title')}
+          </h1>
+          <span className="subtitle">{t('app.subtitle')}</span>
+        </div>
+        {user ? (
+          <button className="auth-btn" onClick={() => void logout()} title={t('auth.logout')}>
+            {user.photoURL && <img src={user.photoURL} alt="" className="auth-avatar" />}
+            <span>{user.displayName ?? user.email}</span>
+          </button>
+        ) : (
+          <button className="auth-btn" onClick={() => void login()}>
+            {t('auth.login')}
+          </button>
+        )}
       </header>
 
       <SearchBar onSearch={handleSearch} loading={allLoading} />
@@ -80,9 +107,11 @@ export default function App() {
           <FilterPanel filters={filters} onChange={handleFilterChange} />
           <PlaceList
             places={places}
+            favorites={favorites}
+            view={listView}
+            onViewChange={setListView}
             loading={loading}
             error={error}
-            favorites={favorites}
             onToggleFavorite={toggle}
             onSelect={handleSelect}
           />

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { CATEGORIES } from '../utils/categoryMap'
+import { CATEGORY_GROUPS } from '../utils/categoryMap'
 import type { FilterState } from '../types/food'
 
 interface FilterPanelProps {
@@ -83,16 +83,23 @@ export default function FilterPanel({ filters, onChange }: FilterPanelProps) {
         {t('filter.openNow')}
       </label>
 
-      <div className="filter-cats">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            className={filters.categories.includes(cat) ? 'cat active' : 'cat'}
-            onClick={() => toggleCategory(cat)}
-          >
-            {t(`categories.${cat}`)}
-          </button>
+      <div className="filter-groups">
+        {CATEGORY_GROUPS.map((group) => (
+          <details key={group.key} className="filter-group" open>
+            <summary>{t(group.labelKey)}</summary>
+            <div className="filter-cats">
+              {group.items.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={filters.categories.includes(cat) ? 'cat active' : 'cat'}
+                  onClick={() => toggleCategory(cat)}
+                >
+                  {t(`categories.${cat}`)}
+                </button>
+              ))}
+            </div>
+          </details>
         ))}
       </div>
     </div>

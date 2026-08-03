@@ -1,5 +1,5 @@
 import type { FoodPlace } from '../types/food'
-import { categoriesToTypes } from '../utils/categoryMap'
+import { categoriesToQueries } from '../utils/categoryMap'
 import { loadMaps } from './mapsLoader'
 import { getCachedPlace, setPlace } from './cache'
 
@@ -61,9 +61,11 @@ function priceLevel(v: number | undefined): 0 | 1 | 2 | 3 | 4 | undefined {
   return v === undefined || (v >= 0 && v <= 4) ? (v as 0 | 1 | 2 | 3 | 4 | undefined) : undefined
 }
 
+const MAX_KEYWORD_QUERIES = 8
+
 export async function fetchFoodPlaces(opts: FetchOptions): Promise<FoodPlace[]> {
   const results = await withPlaceService(async (svc) => {
-    const typeList = categoriesToTypes(opts.categories)
+    const queries = categoriesToQueries(opts.categories)
 
     const base: google.maps.places.TextSearchRequest = {
       location: opts.center,
@@ -71,7 +73,8 @@ export async function fetchFoodPlaces(opts: FetchOptions): Promise<FoodPlace[]> 
       type: 'restaurant',
     }
 
-    const keywords = typeList.length > 0 ? typeList : ['美食', '小吃', '餐廳']
+    const keywords =
+      queries.length > 0 && queries.length <= MAX_KEYWORD_QUERIES ? queries : ['美食', '小吃', '餐廳']
     const all: google.maps.places.PlaceResult[] = []
     for (const kw of keywords) {
       try {
