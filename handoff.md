@@ -43,6 +43,6 @@ foodmap 三大問題＋跨裝置同步已全數實作（本機 build/lint 通過
 - 所有回應與文件使用繁體中文
 
 ## 🕐 最後更新
-- 時間：2026-08-03（foodmap 功能大改版＋跨裝置同步，本機完成，未 commit）
+- 時間：2026-08-03（foodmap 功能大改版＋跨裝置同步，已 commit＋push）
 - 更新者：opencode @ PBHOME-X1G12
-- Git push：❌ 尚未 commit/push（本次變更仍在工作目錄）
+- Git push：✅ 已推（peterhupc/oc_maps，master，至 4153b40）
