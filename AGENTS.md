@@ -7,9 +7,11 @@
 
 ## 關鍵時程
 <!-- 格式：- 事件名稱：日期（說明）；沒有就留白 -->
+- foodmap 上線 GitHub Pages：2026-08-03（CI 自動部署 + API key secret 就緒）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
+- [x] foodmap 分支：CI 部署 GitHub Pages 上線（https://peterhupc.github.io/oc_maps/）
 - [ ] 階段一：規劃主專案架構與資料夾分類（區域地圖 → 分支）
 - [ ] 階段二：
 - [ ] 階段三：
@@ -18,9 +20,13 @@
 <!-- 初始化時自動掃描生成，之後新增檔案要更新 -->
 ```
 oc_maps/
-├── AGENTS.md      # 專案藍圖（本檔）
-├── handoff.md     # 交接檔
-└── .gitignore
+├── AGENTS.md                      # 專案藍圖（本檔）
+├── handoff.md                     # 交接檔
+├── .github/workflows/deploy.yml   # foodmap CI 部署（官方 deploy-pages）
+├── .gitignore
+└── foodmap/                       # foodmap 區域地圖分支（獨立 Vite 專案）
+    ├── src/                       # mapsLoader、foodSource、components、pages
+    └── .env.local                 # 本機測試用 API key（gitignored，不入 repo）
 ```
 
 ## 同步層級（本專案初始化至第 3 層級）
