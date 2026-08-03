@@ -15,8 +15,8 @@
 - [x] foodmap 分支：CI 部署 GitHub Pages 上線（https://peterhupc.github.io/oc_maps/）
 - [x] foodmap 三問題改版：拖曳＋拖動重搜、點列表突顯地圖＋照片資訊窗、25 類分組、收藏清單頁籤
 - [x] 跨裝置收藏同步：Firebase 專案 oc-maps-foodmap（Auth Google＋Firestore 規則已部署、SDK 已接）
-- [ ] 正式站同步開通：GitHub Actions secrets 新增 VITE_FIREBASE_*＋Firebase Auth 授權網域加 peterhupc.github.io
-- [ ] 本機驗證後 commit＋push（foodmap 改版＋Firebase＋workflow）
+- [x] 正式站同步開通：CI 已部署新版（commit 4153b40；GitHub secrets 尚未加 → 正式站登入暫時停用，安全降級）
+- [x] 本機驗證後 commit＋push（foodmap 改版＋Firebase＋workflow）
 - [ ] 階段一：規劃主專案架構與資料夾分類（區域地圖 → 分支）
 - [ ] 階段二：
 - [ ] 階段三：

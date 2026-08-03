@@ -26,11 +26,11 @@ foodmap 三大問題＋跨裝置同步已全數實作（本機 build/lint 通過
 - Google 登入 provider 已啟用（OAuth 品牌「FoodMap 食圖」）
 
 ## ➡️ 下一步
-1. **使用者手動（開通正式站同步）**：
-   - GitHub 後台新增 Actions secrets：`VITE_FIREBASE_API_KEY`、`VITE_FIREBASE_AUTH_DOMAIN`、`VITE_FIREBASE_PROJECT_ID`、`VITE_FIREBASE_APP_ID`、`VITE_FIREBASE_STORAGE_BUCKET`、`VITE_FIREBASE_MESSAGING_SENDER_ID`（值在 `foodmap/.env.local`）
+1. **使用者手動（開通正式站登入）**：
+   - GitHub 後台新增 Actions secrets：`VITE_FIREBASE_API_KEY`、`VITE_FIREBASE_AUTH_DOMAIN`、`VITE_FIREBASE_PROJECT_ID`、`VITE_FIREBASE_APP_ID`、`VITE_FIREBASE_STORAGE_BUCKET`、`VITE_FIREBASE_MESSAGING_SENDER_ID`（值在 `foodmap/.env.local`；新增後 re-run 最新 workflow 即可熱更新）
    - Firebase 控制台 > Authentication > Settings > Authorized domains 加入 `peterhupc.github.io`（否則正式站 Google 登入 popup 會被擋；localhost 不需加）
-2. 本機驗證後 commit 變更（foodmap 全功能＋Firebase＋workflow）並 push，CI 自動部署
-3. 規劃主專案架構與資料夾分類（區域地圖 → 分支）
+   - 目前正式站已上線新版：地圖＋收藏本機功能正常，僅「登入／跨裝置同步」因 secrets 未加而停用（安全降級）
+2. 規劃主專案架構與資料夾分類（區域地圖 → 分支）
 
 ## ⚠️ 注意事項
 - `gh` CLI 的 keyring token 仍失效（`gh auth login -h github.com` 可修），但 git push 走 Windows GCM 的 PAT，目前運作正常
