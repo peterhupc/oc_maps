@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'foodmap/**'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,8 +22,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: foodmap/package-lock.json
 
       - name: Install dependencies
         run: npm ci
