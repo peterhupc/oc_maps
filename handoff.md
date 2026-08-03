@@ -50,4 +50,4 @@ foodmap 全鏈路已完成並上線，正式站 Google 登入已開通：
 ## 🕐 最後更新
 - 時間：2026-08-04（登入開通＋排序＋專案清理）
 - 更新者：opencode @ PBHOME-X1G12
-- Git push：✅ 已推（peterhupc/oc_maps，master，至 aef23a8）
+- Git push：✅ 已推（peterhupc/oc_maps，master，至 42458b7）
