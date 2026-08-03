@@ -1,6 +1,8 @@
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { FoodPlace } from '../types/food'
+import type { FoodPlace, SortOption, SortOrigin } from '../types/food'
 import type { FavoriteItem } from '../hooks/useFavorites'
+import { sortPlaces } from '../utils/sortPlaces'
 
 export type ListView = 'all' | 'favorites'
 
@@ -13,6 +15,9 @@ interface PlaceListProps {
   error: string | null
   onToggleFavorite: (place: FoodPlace) => void
   onSelect: (place: FoodPlace) => void
+  sort: SortOption
+  onSortChange: (s: SortOption) => void
+  distanceOrigin: SortOrigin
 }
 
 function PlaceCard({
@@ -69,8 +74,20 @@ export default function PlaceList({
   error,
   onToggleFavorite,
   onSelect,
+  sort,
+  onSortChange,
+  distanceOrigin,
 }: PlaceListProps) {
   const { t } = useTranslation()
+
+  const sortedPlaces = useMemo(
+    () => sortPlaces(places, sort, distanceOrigin),
+    [places, sort, distanceOrigin]
+  )
+  const sortedFavorites = useMemo(
+    () => sortPlaces(favorites, sort, distanceOrigin),
+    [favorites, sort, distanceOrigin]
+  )
 
   return (
     <div className="place-list-wrap">
@@ -92,6 +109,29 @@ export default function PlaceList({
         </button>
       </div>
 
+      <div className="sort-bar">
+        <select
+          value={sort}
+          aria-label={t('sort.label')}
+          onChange={(e) => onSortChange(e.target.value as SortOption)}
+        >
+          <option value="default">{t('sort.default')}</option>
+          <option value="distance">{t('sort.distance')}</option>
+          <option value="rating">{t('sort.rating')}</option>
+          <option value="price_asc">{t('sort.priceAsc')}</option>
+          <option value="price_desc">{t('sort.priceDesc')}</option>
+        </select>
+        {sort !== 'default' && (
+          <button
+            type="button"
+            className="sort-reset"
+            onClick={() => onSortChange('default')}
+          >
+            {t('sort.backToDefault')}
+          </button>
+        )}
+      </div>
+
       {view === 'all' ? (
         loading ? (
           <div className="list-status">{t('list.loading')}</div>
@@ -101,7 +141,7 @@ export default function PlaceList({
           <div className="list-status">{t('list.empty')}</div>
         ) : (
           <ul className="place-list">
-            {places.map((place) => (
+            {sortedPlaces.map((place) => (
               <PlaceCard
                 key={place.place_id}
                 place={place}
@@ -116,7 +156,7 @@ export default function PlaceList({
         <div className="list-status">{t('list.favEmpty')}</div>
       ) : (
         <ul className="place-list">
-          {favorites.map((place) => (
+          {sortedFavorites.map((place) => (
             <PlaceCard
               key={place.place_id}
               place={place}

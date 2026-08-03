@@ -34,6 +34,15 @@
     "tabFavorites": "收藏",
     "favEmpty": "還沒有收藏的餐廳，點選店家名稱旁的星號即可收藏"
   },
+  "sort": {
+    "label": "排序方式",
+    "default": "Google 預設",
+    "distance": "距離最近",
+    "rating": "評分最高",
+    "priceAsc": "價位由低到高",
+    "priceDesc": "價位由高到低",
+    "backToDefault": "回到預設"
+  },
   "categories": {
     "台式小吃": "台式小吃",
     "夜市小吃": "夜市小吃",

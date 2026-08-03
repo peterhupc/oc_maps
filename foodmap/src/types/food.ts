@@ -28,3 +28,10 @@ export interface FilterState {
   priceRange: [number, number]
   openNow: boolean
 }
+
+export type SortOption = 'distance' | 'rating' | 'price_asc' | 'price_desc' | 'default'
+
+export interface SortOrigin {
+  lat: number
+  lng: number
+}

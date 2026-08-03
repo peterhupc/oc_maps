@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { MapPinned } from 'lucide-react'
-import type { FilterState, FoodPlace } from './types/food'
+import type { FilterState, FoodPlace, SortOption, SortOrigin } from './types/food'
 import { CATEGORIES } from './utils/categoryMap'
 import MapView from './components/MapView'
 import SearchBar from './components/SearchBar'
@@ -24,6 +24,8 @@ export default function App() {
   const [center, setCenter] = useState(DEFAULT_CENTER)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [listView, setListView] = useState<ListView>('all')
+  const [sort, setSort] = useState<SortOption>('default')
+  const [distanceOrigin, setDistanceOrigin] = useState<SortOrigin>(DEFAULT_CENTER)
   const [filters, setFilters] = useState<FilterState>({
     center: null,
     radiusKm: 3,
@@ -41,6 +43,7 @@ export default function App() {
     async (address: string) => {
       const loc = await geocodeAddress(address)
       if (!loc) return
+      setDistanceOrigin(loc)
       const next: FilterState = { ...filtersRef.current, center: loc }
       setCenter(loc)
       setFilters(next)
@@ -124,6 +127,9 @@ export default function App() {
             error={error}
             onToggleFavorite={toggle}
             onSelect={handleSelect}
+            sort={sort}
+            onSortChange={setSort}
+            distanceOrigin={distanceOrigin}
           />
         </aside>
 
