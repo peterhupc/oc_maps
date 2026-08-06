@@ -12,6 +12,7 @@
 - 正式站登入開通：2026-08-04（7 secrets 補齊、authorized domains、Google 登入成功）
 - foodmap 排序下拉：2026-08-04（距離／評分／價位／Google 預設）
 - 專案清理：2026-08-04（README 重寫、移除過時 RDQ 規格與空殼 .firebaserc）
+- 主專案架構規劃：2026-08-06（docs/architecture.md：單 repo＋子路徑、三圖範圍、聚合部署模型）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
@@ -22,7 +23,8 @@
 - [x] foodmap 排序下拉：距離／評分／價位／Google 預設（commit 74b284c）
 - [x] 本機驗證後 commit＋push（foodmap 改版＋Firebase＋workflow）
 - [x] 專案清理：README 重寫、刪過時 RDQ 規格與空殼 .firebaserc（commit df9ca2a）
-- [ ] 階段一：規劃主專案架構與資料夾分類（區域地圖 → 分支）
+- [x] 階段一：規劃主專案架構與資料夾分類（單 repo＋子路徑、三圖範圍、聚合部署；docs/architecture.md）
+- [ ] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
 - [ ] 階段二：
 - [ ] 階段三：
 
@@ -36,6 +38,8 @@ oc_maps/
 ├── firestore.rules                # Firestore 安全規則（收藏僅本人可讀寫）
 ├── .github/workflows/deploy.yml   # foodmap CI 部署（官方 deploy-pages）
 ├── .gitignore
+├── docs/
+│   └── architecture.md            # 主專案架構規劃（單 repo＋子路徑、三圖、聚合部署）
 ├── rdq/                           # RDQ 需求規格卡（保留最新排序規格，舊卡已刪）
 │   └── RDQ-spec-foodmap-sort-20260804.md
 └── foodmap/                       # foodmap 區域地圖分支（獨立 Vite 專案）
