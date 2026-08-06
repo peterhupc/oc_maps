@@ -7,6 +7,7 @@
 | 地圖 | 網址 | 狀態 | 說明 |
 |------|------|------|------|
 | 食圖 FoodMap | https://peterhupc.github.io/oc_maps/foodmap/ | 已上線 | 美食搜尋、25 類分組、收藏（跨裝置 Firebase 同步）、排序 |
+| 停車場 Parking | （規劃中） | 規劃中 | 停車場地圖（尚未動工） |
 
 ## 架構
 

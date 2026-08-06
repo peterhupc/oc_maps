@@ -14,6 +14,7 @@
 - 專案清理：2026-08-04（README 重寫、移除過時 RDQ 規格與空殼 .firebaserc）
 - 主專案架構規劃：2026-08-06（docs/architecture.md：單 repo＋子路徑、三圖範圍、聚合部署模型）
 - foodmap 遷移子路徑：2026-08-07（vite base `/oc_maps/foodmap/`、deploy.yml 聚合 build、主專案索引頁＋根 README；本機 preview HTTP 全 200 驗證通過）
+- 停車場地圖登記：2026-08-07（第四圖 parking 登錄藍圖，規劃中尚未動工；travel/facility/parking 範圍定案為四圖）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
@@ -27,6 +28,7 @@
 - [x] 階段一：規劃主專案架構與資料夾分類（單 repo＋子路徑、三圖範圍、聚合部署；docs/architecture.md）
 - [x] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
 - [ ] 遷移後 commit＋push，驗證 Pages `/oc_maps/foodmap/` 與 `/oc_maps/` 可開
+- [x] 停車場地圖登記：parking 登錄藍圖（docs/architecture.md D3＋資料夾結構、AGENTS.md 時程；規劃中尚未動工）
 - [ ] 階段二：
 - [ ] 階段三：
 
@@ -36,14 +38,14 @@
 oc_maps/
 ├── AGENTS.md                      # 專案藍圖（本檔）
 ├── handoff.md                     # 交接檔
-├── README.md                      # 主專案地圖索引（三圖一覽）
+├── README.md                      # 主專案地圖索引（四圖一覽）
 ├── index.html                     # 主專案索引頁（聚合後為 dist/index.html）
 ├── firebase.json                  # Firebase 設定（firestore 規則/indexes 路徑）
 ├── firestore.rules                # Firestore 安全規則（收藏僅本人可讀寫）
 ├── .github/workflows/deploy.yml   # 單一聚合部署 workflow（依序 build 各圖→聚合 dist/→deploy-pages）
 ├── .gitignore
 ├── docs/
-│   └── architecture.md            # 主專案架構規劃（單 repo＋子路徑、三圖、聚合部署）
+│   └── architecture.md            # 主專案架構規劃（單 repo＋子路徑、四圖、聚合部署）
 ├── rdq/                           # RDQ 需求規格卡（保留最新排序規格，舊卡已刪）
 │   └── RDQ-spec-foodmap-sort-20260804.md
 └── foodmap/                       # foodmap 區域地圖分支（獨立 Vite 專案）
@@ -54,6 +56,9 @@ oc_maps/
     │   ├── utils/categoryMap.ts   # 25 類分組（料理菜系＋餐廳型態）
     │   └── utils/sortPlaces.ts    # 結果排序（距離／評分／價位／Google 預設）
     └── .env.local                 # 本機測試用 API key＋Firebase 設定（gitignored，不入 repo）
+├── travel/                        # 地圖二：旅遊景點地圖（規劃中，尚未動工）
+├── facility/                      # 地圖三：公共設施地圖（規劃中，尚未動工）
+└── parking/                       # 地圖四：停車場地圖（規劃中，尚未動工）
 ```
 
 ## 同步層級（本專案初始化至第 3 層級）

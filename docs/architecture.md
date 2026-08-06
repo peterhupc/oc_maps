@@ -17,7 +17,7 @@
 |------|------|
 | D1 倉庫模型 | **單 repo＋子路徑**：所有地圖都在 `oc_maps` 底下，各自獨立資料夾，不開多 repo |
 | D2 每圖技術 | 每張地圖維持**獨立 Vite 專案**（自己的 `package.json`／`vite.config.ts`／README）；**第二張圖需求確定後再抽共用層**，不預先抽象 |
-| D3 涵蓋範圍 | 目前三圖：`foodmap`（美食）、`travel`（旅遊景點）、`facility`（公共設施） |
+| D3 涵蓋範圍 | 目前四圖：`foodmap`（美食）、`travel`（旅遊景點）、`facility`（公共設施）、`parking`（停車場） |
 | D4 文件標準 | 每圖：專案版 `README.md`＋`rdq/RDQ-spec-<圖>-<主題>-<日期>.md`＋AGENTS.md 時程/checklist 登錄；主專案根 `README.md` 做地圖索引 |
 
 ## 3. 目標資料夾結構
@@ -37,7 +37,8 @@ oc_maps/
 ├── .github/workflows/deploy.yml   # 單一部署 workflow：聚合所有地圖 build 成一個 dist
 ├── foodmap/                       # 地圖一：美食地圖（現有）
 ├── travel/                        # 地圖二：旅遊景點地圖（規劃中，尚未動工）
-└── facility/                      # 地圖三：公共設施地圖（規劃中，尚未動工）
+├── facility/                      # 地圖三：公共設施地圖（規劃中，尚未動工）
+└── parking/                       # 地圖四：停車場地圖（規劃中，尚未動工）
 ```
 
 ## 4. 部署模型（子路徑遷移）
@@ -51,6 +52,7 @@ oc_maps/
 | foodmap | `https://peterhupc.github.io/oc_maps/foodmap/` |
 | travel | `https://peterhupc.github.io/oc_maps/travel/` |
 | facility | `https://peterhupc.github.io/oc_maps/facility/` |
+| parking | `https://peterhupc.github.io/oc_maps/parking/` |
 | 索引頁 | `https://peterhupc.github.io/oc_maps/` |
 
 ### 4.2 需要的改動
