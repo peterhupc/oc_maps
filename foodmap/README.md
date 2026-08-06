@@ -55,3 +55,4 @@ foodmap/src/
 ├── types/         # FoodPlace 等型別
 └── utils/         # 25 類分組、排序
 ```
+
