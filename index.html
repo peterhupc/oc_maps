@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>oc_maps 地圖集</title>
+    <meta name="description" content="oc_maps 專案地圖索引" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", "Microsoft JhengHei", sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+      }
+      header {
+        background: linear-gradient(135deg, #4285f4, #34a853);
+        color: #fff;
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+      header p {
+        margin: 0;
+        opacity: 0.9;
+      }
+      main {
+        max-width: 64rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: 1rem;
+      }
+      .card {
+        display: block;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .card h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.15rem;
+      }
+      .card p {
+        margin: 0 0 0.75rem;
+        font-size: 0.9rem;
+        color: #475569;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .badge.soon {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      footer {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #94a3b8;
+        padding-bottom: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>oc_maps 地圖集</h1>
+      <p>各種與地圖相關的專案</p>
+    </header>
+    <main>
+      <div class="grid">
+        <a class="card" href="/oc_maps/foodmap/">
+          <h2>食圖 FoodMap</h2>
+          <p>美食搜尋、分類、收藏同步</p>
+          <span class="badge">已上線</span>
+        </a>
+        <a class="card" href="#" aria-disabled="true">
+          <h2>旅行地圖</h2>
+          <p>規劃中</p>
+          <span class="badge soon">敬請期待</span>
+        </a>
+        <a class="card" href="#" aria-disabled="true">
+          <h2>校園設施地圖</h2>
+          <p>規劃中</p>
+          <span class="badge soon">敬請期待</span>
+        </a>
+      </div>
+    </main>
+    <footer>oc_maps</footer>
+  </body>
+</html>

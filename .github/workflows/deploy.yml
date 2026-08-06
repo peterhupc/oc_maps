@@ -1,10 +1,13 @@
-name: Deploy foodmap to GitHub Pages
+name: Deploy maps to GitHub Pages
 
 on:
   push:
     branches: [master]
     paths:
+      - 'index.html'
       - 'foodmap/**'
+      - 'travel/**'
+      - 'facility/**'
   workflow_dispatch:
 
 permissions:
@@ -19,9 +22,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: foodmap
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -32,11 +32,11 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+      - name: Build foodmap
+        working-directory: foodmap
+        run: |
+          npm ci
+          npm run build
         env:
           VITE_GMAPS_KEY: ${{ secrets.VITE_GMAPS_KEY }}
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
@@ -46,13 +46,19 @@ jobs:
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
 
+      - name: Aggregate dist for Pages
+        run: |
+          mkdir -p dist/foodmap
+          cp -r foodmap/dist/. dist/foodmap/
+          cp index.html dist/index.html
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: foodmap/dist
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment

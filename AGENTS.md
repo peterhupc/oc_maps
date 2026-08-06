@@ -13,6 +13,7 @@
 - foodmap 排序下拉：2026-08-04（距離／評分／價位／Google 預設）
 - 專案清理：2026-08-04（README 重寫、移除過時 RDQ 規格與空殼 .firebaserc）
 - 主專案架構規劃：2026-08-06（docs/architecture.md：單 repo＋子路徑、三圖範圍、聚合部署模型）
+- foodmap 遷移子路徑：2026-08-07（vite base `/oc_maps/foodmap/`、deploy.yml 聚合 build、主專案索引頁＋根 README；本機 preview HTTP 全 200 驗證通過）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
@@ -24,7 +25,8 @@
 - [x] 本機驗證後 commit＋push（foodmap 改版＋Firebase＋workflow）
 - [x] 專案清理：README 重寫、刪過時 RDQ 規格與空殼 .firebaserc（commit df9ca2a）
 - [x] 階段一：規劃主專案架構與資料夾分類（單 repo＋子路徑、三圖範圍、聚合部署；docs/architecture.md）
-- [ ] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
+- [x] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
+- [ ] 遷移後 commit＋push，驗證 Pages `/oc_maps/foodmap/` 與 `/oc_maps/` 可開
 - [ ] 階段二：
 - [ ] 階段三：
 
@@ -34,9 +36,11 @@
 oc_maps/
 ├── AGENTS.md                      # 專案藍圖（本檔）
 ├── handoff.md                     # 交接檔
+├── README.md                      # 主專案地圖索引（三圖一覽）
+├── index.html                     # 主專案索引頁（聚合後為 dist/index.html）
 ├── firebase.json                  # Firebase 設定（firestore 規則/indexes 路徑）
 ├── firestore.rules                # Firestore 安全規則（收藏僅本人可讀寫）
-├── .github/workflows/deploy.yml   # foodmap CI 部署（官方 deploy-pages）
+├── .github/workflows/deploy.yml   # 單一聚合部署 workflow（依序 build 各圖→聚合 dist/→deploy-pages）
 ├── .gitignore
 ├── docs/
 │   └── architecture.md            # 主專案架構規劃（單 repo＋子路徑、三圖、聚合部署）
