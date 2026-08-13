@@ -19,6 +19,7 @@
 - parking RDQ：2026-08-14（需求訪談完成並 confirmed，規格卡 rdq/RDQ-spec-parking-20260814.md；範圍：北台三都→後續擴充台中/台南/高雄，即時車位用定時快取靜態檔）
 - parking 首版動工：2026-08-14（三都資料源確認＋TWD97→WGS84、fetch 腳本 3428 筆、全 UI 實作、deploy.yml 聚合加入、parking-update 定時 workflow）
 - parking 收藏定位：2026-08-14（點收藏停車場→地圖定位＋臨時圖釘＋資訊窗，commit e77a72a）
+- foodmap 收藏補強：2026-08-14（點收藏餐廳→地圖定位＋臨時旗標；縮圖照片過期自動向 Places API 刷新，commit 4cc9f56／b80e7b9／3d61efd）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
@@ -35,6 +36,7 @@
 - [x] 停車場地圖登記：parking 登錄藍圖（docs/architecture.md D3＋資料夾結構、AGENTS.md 時程；規劃中尚未動工）
 - [x] parking RDQ：需求訪談 confirmed（rdq/RDQ-spec-parking-20260814.md；範圍分階段、即時車位定時快取靜態檔）
 - [x] parking 首版：三都資料源確認＋抓取腳本（3428 筆、含 TWD97→WGS84）、全 UI（搜尋/拖曳重搜/分類/即時車位/收藏）、deploy.yml 聚合加入、parking-update 定時 workflow
+- [x] foodmap 收藏補強：點收藏餐廳→地圖定位＋臨時旗標（selectedPlace 寫法，取代先前誤納的 pinnedPlaces）；縮圖照片過期自動向 Places API 刷新（commit 4cc9f56／b80e7b9／3d61efd）
 - [ ] 階段二：
 - [ ] 階段三：
 
