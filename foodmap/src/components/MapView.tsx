@@ -5,8 +5,8 @@ import { loadMaps } from '../services/mapsLoader'
 interface MapViewProps {
   center: { lat: number; lng: number }
   places: FoodPlace[]
-  pinnedPlaces: FoodPlace[]
   selectedId: string | null
+  selectedPlace: FoodPlace | null
   onSelect: (place: FoodPlace) => void
   onCenterChange: (c: { lat: number; lng: number }) => void
 }
@@ -40,14 +40,13 @@ function infoContent(place: FoodPlace): string {
   )
 }
 
-export default function MapView({ center, places, pinnedPlaces, selectedId, onSelect, onCenterChange }: MapViewProps) {
+export default function MapView({ center, places, selectedId, selectedPlace, onSelect, onCenterChange }: MapViewProps) {
   const ref = useRef<HTMLDivElement>(null)
   const mapRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<{ id: string; marker: google.maps.Marker }[]>([])
   const infoRef = useRef<google.maps.InfoWindow | null>(null)
-  const placesRef = useRef<FoodPlace[]>([])
+  const tempMarkerRef = useRef<google.maps.Marker | null>(null)
   const [mapReady, setMapReady] = useState(false)
-  placesRef.current = places
 
   useEffect(() => {
     let cancelled = false
@@ -90,11 +89,7 @@ export default function MapView({ center, places, pinnedPlaces, selectedId, onSe
     markersRef.current = []
     info.close()
 
-    const byId = new Map<string, FoodPlace>()
-    for (const p of places) byId.set(p.place_id, p)
-    for (const p of pinnedPlaces) byId.set(p.place_id, p)
-
-    for (const place of byId.values()) {
+    for (const place of places) {
       const marker = new google.maps.Marker({
         map,
         position: place.location,
@@ -110,7 +105,7 @@ export default function MapView({ center, places, pinnedPlaces, selectedId, onSe
       markersRef.current.push({ id: place.place_id, marker })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [places, pinnedPlaces, mapReady])
+  }, [places, mapReady])
 
   // 選中狀態只換旗標顏色，不重建 marker
   useEffect(() => {
@@ -119,26 +114,41 @@ export default function MapView({ center, places, pinnedPlaces, selectedId, onSe
     }
   }, [selectedId])
 
-  // 選中時 panTo 並開資訊窗
+  // 選中時：panTo 並開資訊窗；不在搜尋結果（如收藏）則用臨時旗標
   useEffect(() => {
     const map = mapRef.current
     const info = infoRef.current
     if (!map || !info || !mapReady) return
 
-    if (!selectedId) {
+    if (tempMarkerRef.current) {
+      tempMarkerRef.current.setMap(null)
+      tempMarkerRef.current = null
+    }
+
+    if (!selectedPlace) {
       info.close()
       return
     }
 
-    const found = markersRef.current.find((m) => m.id === selectedId)
-    if (!found) return
-    const place = placesRef.current.find((p) => p.place_id === selectedId)
-    if (!place) return
-    map.panTo(found.marker.getPosition() ?? center)
-    info.setContent(infoContent(place))
-    info.open({ map, anchor: found.marker })
+    const found = markersRef.current.find((m) => m.id === selectedPlace.place_id)
+    if (found) {
+      map.panTo(found.marker.getPosition() ?? selectedPlace.location)
+      info.setContent(infoContent(selectedPlace))
+      info.open({ map, anchor: found.marker })
+    } else {
+      const marker = new google.maps.Marker({
+        map,
+        position: selectedPlace.location,
+        title: selectedPlace.name,
+        icon: PIN_ICON_ACTIVE,
+      })
+      tempMarkerRef.current = marker
+      map.panTo(selectedPlace.location)
+      info.setContent(infoContent(selectedPlace))
+      info.open({ map, anchor: marker })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId, mapReady])
+  }, [selectedPlace, mapReady])
 
   return <div ref={ref} className="map-canvas" />
 }
