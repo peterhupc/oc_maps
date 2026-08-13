@@ -23,6 +23,7 @@ export default function App() {
 
   const [center, setCenter] = useState(DEFAULT_CENTER)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [pinnedPlaces, setPinnedPlaces] = useState<FoodPlace[]>([])
   const [listView, setListView] = useState<ListView>('all')
   const [sort, setSort] = useState<SortOption>('default')
   const [distanceOrigin, setDistanceOrigin] = useState<SortOrigin>(DEFAULT_CENTER)
@@ -48,6 +49,7 @@ export default function App() {
       setCenter(loc)
       setFilters(next)
       setSelectedId(null)
+      setPinnedPlaces([])
       await search(next)
     },
     [search]
@@ -57,6 +59,7 @@ export default function App() {
     (next: FilterState) => {
       setFilters(next)
       setSelectedId(null)
+      setPinnedPlaces([])
       if (next.center) void search(next)
     },
     [search]
@@ -64,6 +67,9 @@ export default function App() {
 
   const handleSelect = useCallback((place: FoodPlace) => {
     setSelectedId(place.place_id)
+    setPinnedPlaces((prev) =>
+      prev.some((p) => p.place_id === place.place_id) ? prev : [...prev, place]
+    )
   }, [])
 
   const onMapMove = useCallback(
@@ -71,6 +77,7 @@ export default function App() {
       const next: FilterState = { ...filtersRef.current, center: c }
       setFilters(next)
       setSelectedId(null)
+      setPinnedPlaces([])
       if (moveTimerRef.current) window.clearTimeout(moveTimerRef.current)
       moveTimerRef.current = window.setTimeout(() => void search(next), MAP_MOVE_DEBOUNCE_MS)
     },
@@ -137,6 +144,7 @@ export default function App() {
           <MapView
             center={center}
             places={places}
+            pinnedPlaces={pinnedPlaces}
             selectedId={selectedId}
             onSelect={handleSelect}
             onCenterChange={onMapMove}

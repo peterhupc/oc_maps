@@ -18,6 +18,7 @@
 - 停車場地圖改期：2026-08-13（parking 藍圖已登錄、未跑 RDQ 未動工；實際製作改至新 session，本次收工僅補記並 commit＋push）
 - parking RDQ：2026-08-14（需求訪談完成並 confirmed，規格卡 rdq/RDQ-spec-parking-20260814.md；範圍：北台三都→後續擴充台中/台南/高雄，即時車位用定時快取靜態檔）
 - parking 首版動工：2026-08-14（三都資料源確認＋TWD97→WGS84、fetch 腳本 3428 筆、全 UI 實作、deploy.yml 聚合加入、parking-update 定時 workflow）
+- parking 收藏定位：2026-08-14（點收藏停車場→地圖定位＋臨時圖釘＋資訊窗，commit e77a72a）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->

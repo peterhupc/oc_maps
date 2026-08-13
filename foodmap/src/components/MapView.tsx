@@ -5,6 +5,7 @@ import { loadMaps } from '../services/mapsLoader'
 interface MapViewProps {
   center: { lat: number; lng: number }
   places: FoodPlace[]
+  pinnedPlaces: FoodPlace[]
   selectedId: string | null
   onSelect: (place: FoodPlace) => void
   onCenterChange: (c: { lat: number; lng: number }) => void
@@ -39,7 +40,7 @@ function infoContent(place: FoodPlace): string {
   )
 }
 
-export default function MapView({ center, places, selectedId, onSelect, onCenterChange }: MapViewProps) {
+export default function MapView({ center, places, pinnedPlaces, selectedId, onSelect, onCenterChange }: MapViewProps) {
   const ref = useRef<HTMLDivElement>(null)
   const mapRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<{ id: string; marker: google.maps.Marker }[]>([])
@@ -89,7 +90,11 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
     markersRef.current = []
     info.close()
 
-    for (const place of places) {
+    const byId = new Map<string, FoodPlace>()
+    for (const p of places) byId.set(p.place_id, p)
+    for (const p of pinnedPlaces) byId.set(p.place_id, p)
+
+    for (const place of byId.values()) {
       const marker = new google.maps.Marker({
         map,
         position: place.location,
@@ -105,7 +110,7 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
       markersRef.current.push({ id: place.place_id, marker })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [places, mapReady])
+  }, [places, pinnedPlaces, mapReady])
 
   // 選中狀態只換旗標顏色，不重建 marker
   useEffect(() => {
