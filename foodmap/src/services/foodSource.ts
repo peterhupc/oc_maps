@@ -61,6 +61,12 @@ function priceLevel(v: number | undefined): 0 | 1 | 2 | 3 | 4 | undefined {
   return v === undefined || (v >= 0 && v <= 4) ? (v as 0 | 1 | 2 | 3 | 4 | undefined) : undefined
 }
 
+// 重新向 Places API 抓取最新照片 URL（舊的 photo_reference 會過期）
+export async function refreshPlacePhotos(placeId: string): Promise<string[]> {
+  const detail = await withPlaceService((s) => placeDetails(s, placeId)).catch(() => null)
+  return photoUrls(detail?.photos)
+}
+
 const MAX_KEYWORD_QUERIES = 8
 
 export async function fetchFoodPlaces(opts: FetchOptions): Promise<FoodPlace[]> {

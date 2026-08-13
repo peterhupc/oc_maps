@@ -109,5 +109,22 @@ export function useFavorites() {
     await firebaseLogout()
   }, [])
 
-  return { favorites, toggle, login, logout, user }
+  // 更新收藏的局部資料（如照片 URL 過期時刷新）
+  const updateFavorite = useCallback(
+    (placeId: string, patch: Partial<FoodPlace>) => {
+      setFavorites((prev) => {
+        const next = prev.map((f) => (f.place_id === placeId ? { ...f, ...patch } : f))
+        saveLocal(next)
+        const db = getFirebaseDb()
+        if (user && db) {
+          const updated = next.find((f) => f.place_id === placeId)
+          if (updated) void setDoc(doc(db, `users/${user.uid}/favorites/${placeId}`), updated)
+        }
+        return next
+      })
+    },
+    [user]
+  )
+
+  return { favorites, toggle, login, logout, user, updateFavorite }
 }

@@ -15,6 +15,7 @@ interface PlaceListProps {
   error: string | null
   onToggleFavorite: (place: FoodPlace) => void
   onSelect: (place: FoodPlace) => void
+  onPhotoError?: (place: FoodPlace) => void
   sort: SortOption
   onSortChange: (s: SortOption) => void
   distanceOrigin: SortOrigin
@@ -25,23 +26,29 @@ function PlaceCard({
   isFav,
   onToggleFavorite,
   onSelect,
+  onPhotoError,
 }: {
   place: FoodPlace
   isFav: boolean
   onToggleFavorite: (place: FoodPlace) => void
   onSelect: (place: FoodPlace) => void
+  onPhotoError?: (place: FoodPlace) => void
 }) {
   const { t } = useTranslation()
-  const [imgError, setImgError] = useState(false)
-  const photo = place.photos?.[0]
+  const [failedUrl, setFailedUrl] = useState<string | null>(null)
+  const photo = place.photos?.[0] ?? null
+  const showImg = photo != null && photo !== failedUrl
   return (
     <li className="place-card" onClick={() => onSelect(place)}>
-      {photo && !imgError ? (
+      {showImg ? (
         <img
           src={photo}
           alt={place.name}
           loading="lazy"
-          onError={() => setImgError(true)}
+          onError={() => {
+            setFailedUrl(photo)
+            onPhotoError?.(place)
+          }}
         />
       ) : (
         <div className="no-photo">{t('list.noPhotos')}</div>
@@ -81,6 +88,7 @@ export default function PlaceList({
   error,
   onToggleFavorite,
   onSelect,
+  onPhotoError,
   sort,
   onSortChange,
   distanceOrigin,
@@ -155,6 +163,7 @@ export default function PlaceList({
                 isFav={favorites.some((f) => f.place_id === place.place_id)}
                 onToggleFavorite={onToggleFavorite}
                 onSelect={onSelect}
+                onPhotoError={onPhotoError}
               />
             ))}
           </ul>
@@ -170,6 +179,7 @@ export default function PlaceList({
               isFav
               onToggleFavorite={onToggleFavorite}
               onSelect={onSelect}
+              onPhotoError={onPhotoError}
             />
           ))}
         </ul>

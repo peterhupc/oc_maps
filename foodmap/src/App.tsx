@@ -11,6 +11,7 @@ import { useFoodSearch } from './hooks/useFoodSearch'
 import { useJsApi } from './hooks/useJsApi'
 import { useFavorites } from './hooks/useFavorites'
 import { geocodeAddress } from './services/geocode'
+import { refreshPlacePhotos } from './services/foodSource'
 
 const DEFAULT_CENTER = { lat: 25.033, lng: 121.565 } // 台北
 const MAP_MOVE_DEBOUNCE_MS = 600
@@ -19,7 +20,7 @@ export default function App() {
   const { t } = useTranslation()
   const { loaded: mapsLoaded, error: mapsError } = useJsApi()
   const { places, loading, error, search } = useFoodSearch()
-  const { favorites, toggle, login, logout, user } = useFavorites()
+  const { favorites, toggle, login, logout, user, updateFavorite } = useFavorites()
 
   const [center, setCenter] = useState(DEFAULT_CENTER)
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -39,6 +40,20 @@ export default function App() {
   const filtersRef = useRef(filters)
   filtersRef.current = filters
   const moveTimerRef = useRef<number | null>(null)
+  const photoRefreshAttemptedRef = useRef(new Set<string>())
+
+  // 收藏縮圖載入失敗（照片參考過期）時，重新抓取最新照片 URL
+  const handlePhotoError = useCallback(
+    (place: FoodPlace) => {
+      if (photoRefreshAttemptedRef.current.has(place.place_id)) return
+      photoRefreshAttemptedRef.current.add(place.place_id)
+      void (async () => {
+        const fresh = await refreshPlacePhotos(place.place_id)
+        if (fresh.length > 0) updateFavorite(place.place_id, { photos: fresh })
+      })()
+    },
+    [updateFavorite]
+  )
 
   const handleSearch = useCallback(
     async (address: string) => {
@@ -132,6 +147,7 @@ export default function App() {
             error={error}
             onToggleFavorite={toggle}
             onSelect={handleSelect}
+            onPhotoError={handlePhotoError}
             sort={sort}
             onSortChange={setSort}
             distanceOrigin={distanceOrigin}
