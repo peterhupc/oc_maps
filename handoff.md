@@ -41,6 +41,6 @@
 
 - 時間：2026-08-13
 - 更新者：opencode @ PBHOME-X1G12
-- Git push：⏳ 待 push（本次 parking 改期登錄尚未 commit）
+- Git push：✅已推
 - Foodmap 狀態：🟢 功能完工、🟢 已部署上線
 - Parking 狀態：🟡 已登記、未動工（改期至新 session）
