@@ -15,6 +15,7 @@
 - 主專案架構規劃：2026-08-06（docs/architecture.md：單 repo＋子路徑、三圖範圍、聚合部署模型）
 - foodmap 遷移子路徑：2026-08-07（vite base `/oc_maps/foodmap/`、deploy.yml 聚合 build、主專案索引頁＋根 README；本機 preview HTTP 全 200 驗證通過）
 - 停車場地圖登記：2026-08-07（第四圖 parking 登錄藍圖，規劃中尚未動工；travel/facility/parking 範圍定案為四圖）
+- 停車場地圖改期：2026-08-13（parking 藍圖已登錄、未跑 RDQ 未動工；實際製作改至新 session，本次收工僅補記並 commit＋push）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
