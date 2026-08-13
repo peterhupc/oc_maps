@@ -43,6 +43,7 @@
 
 - 時間：2026-08-14
 - 更新者：opencode @ PBHOME-X1G12
-- Git push：✅ 已推（f0d2b59 首版＋e77a72a 收藏定位，本次 handoff/AGENTS 更新待推）
+- Git push：✅ 已推（f0d2b59 首版、e77a72a 收藏定位、a537d77 收工 docs）
+- ⚠️ 收工 commit `a537d77` 意外夾帶 foodmap「pinnedPlaces 圖釘暫存」變更（其他 Agent 留下的未 commit 工作，`git add -A` 誤納入）；內容完整、build＋lint 通過、CI success。開工時請確認此功能是否為有意保留
 - Foodmap 狀態：🟢 功能完工、🟢 已部署上線
 - Parking 狀態：🟢 首版已上線、🟢 收藏定位完工
