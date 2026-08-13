@@ -13,7 +13,7 @@ foodmap 全鏈路已完成並上線，正式站 Google 登入已開通：
 6. **專案清理**（commit `df9ca2a`）：`foodmap/README.md` 重寫為專案版（原為 Vite 樣板）；刪除過時 `rdq/RDQ-spec-foodmap-20260803.md`（多數功能未實作、易誤導）與空殼 `.firebaserc`
 7. **主專案架構規劃**（2026-08-06）：`docs/architecture.md` 定案單 repo＋子路徑、三圖範圍（foodmap／旅遊景點／公共設施）、聚合部署模型；AGENTS.md 時程/checklist/資料夾結構同步更新
 8. **foodmap 遷移子路徑**（2026-08-07，commit `52e7b79`）：`vite.config.ts` base 改 `/oc_maps/foodmap/`、deploy.yml 改單一聚合 workflow、新增根 `index.html` 主索引頁＋根 `README.md` 地圖索引；本機 preview 全 HTTP 200 驗證通過，已 push
-      - ⚠️ **Pages 部署未完成**：多個 workflow run（push trigger + 3 次 workflow_dispatch）均 cancelled。根 `/oc_maps/` HTTP 200，`/oc_maps/foodmap/` 仍 404。疑為 concurency group `pages` cancel-in-progress 互相干涉。下次開工應重觸發單次 workflow_dispatch 並追蹤到底。
+      - ✅ **Pages 部署完成**：run `31706973633`（workflow_dispatch）SUCCEEDED，根 `/oc_maps/` 與 `/oc_maps/foodmap/` 均 HTTP 200 驗證通過。先前 cancelled 原因為 runner 可用性（非 concurrency），已由 commit `e5a6e4d` 修復。
       - 🟢 **foodmap 功能本身已完成**，部署問題僅為 CI 層，不影響程式碼
 9. **停車場地圖登記**（2026-08-07）：`docs/architecture.md` D3 定案為**四圖**（foodmap／travel／facility／parking），資料夾結構＋部署 URL 表加 `parking/`；AGENTS.md 時程/checklist/資料夾結構同步更新；根 README 地圖索引加 parking 列。parking 與 travel/facility 均**規劃中尚未動工**
 

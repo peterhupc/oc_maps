@@ -27,7 +27,7 @@
 - [x] 專案清理：README 重寫、刪過時 RDQ 規格與空殼 .firebaserc（commit df9ca2a）
 - [x] 階段一：規劃主專案架構與資料夾分類（單 repo＋子路徑、三圖範圍、聚合部署；docs/architecture.md）
 - [x] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
-- [ ] 遷移後 commit＋push，驗證 Pages `/oc_maps/foodmap/` 與 `/oc_maps/` 可開
+- [x] 遷移後 commit＋push，驗證 Pages `/oc_maps/foodmap/` 與 `/oc_maps/` 可開（run 31706973633 SUCCEEDED，兩 URL 均 HTTP 200）
 - [x] 停車場地圖登記：parking 登錄藍圖（docs/architecture.md D3＋資料夾結構、AGENTS.md 時程；規劃中尚未動工）
 - [ ] 階段二：
 - [ ] 階段三：
