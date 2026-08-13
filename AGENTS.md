@@ -16,6 +16,8 @@
 - foodmap 遷移子路徑：2026-08-07（vite base `/oc_maps/foodmap/`、deploy.yml 聚合 build、主專案索引頁＋根 README；本機 preview HTTP 全 200 驗證通過）
 - 停車場地圖登記：2026-08-07（第四圖 parking 登錄藍圖，規劃中尚未動工；travel/facility/parking 範圍定案為四圖）
 - 停車場地圖改期：2026-08-13（parking 藍圖已登錄、未跑 RDQ 未動工；實際製作改至新 session，本次收工僅補記並 commit＋push）
+- parking RDQ：2026-08-14（需求訪談完成並 confirmed，規格卡 rdq/RDQ-spec-parking-20260814.md；範圍：北台三都→後續擴充台中/台南/高雄，即時車位用定時快取靜態檔）
+- parking 首版動工：2026-08-14（三都資料源確認＋TWD97→WGS84、fetch 腳本 3428 筆、全 UI 實作、deploy.yml 聚合加入、parking-update 定時 workflow）
 
 ## 目標與路線圖
 <!-- 用 checklist 追蹤，收工技能會更新這裡 -->
@@ -30,6 +32,8 @@
 - [x] 階段一後續：foodmap 遷移子路徑（vite base、deploy.yml 聚合 build、主專案索引頁）
 - [x] 遷移後 commit＋push，驗證 Pages `/oc_maps/foodmap/` 與 `/oc_maps/` 可開（run 31706973633 SUCCEEDED，兩 URL 均 HTTP 200）
 - [x] 停車場地圖登記：parking 登錄藍圖（docs/architecture.md D3＋資料夾結構、AGENTS.md 時程；規劃中尚未動工）
+- [x] parking RDQ：需求訪談 confirmed（rdq/RDQ-spec-parking-20260814.md；範圍分階段、即時車位定時快取靜態檔）
+- [x] parking 首版：三都資料源確認＋抓取腳本（3428 筆、含 TWD97→WGS84）、全 UI（搜尋/拖曳重搜/分類/即時車位/收藏）、deploy.yml 聚合加入、parking-update 定時 workflow
 - [ ] 階段二：
 - [ ] 階段三：
 
@@ -43,13 +47,16 @@ oc_maps/
 ├── index.html                     # 主專案索引頁（聚合後為 dist/index.html）
 ├── firebase.json                  # Firebase 設定（firestore 規則/indexes 路徑）
 ├── firestore.rules                # Firestore 安全規則（收藏僅本人可讀寫）
-├── .github/workflows/deploy.yml   # 單一聚合部署 workflow（依序 build 各圖→聚合 dist/→deploy-pages）
+├── .github/workflows/
+│   ├── deploy.yml                   # 單一聚合部署 workflow（依序 build 各圖→聚合 dist/→deploy-pages）
+│   └── parking-update.yml           # parking 即時車位定時抓取（每 15 分，有變化才 commit）
 ├── .gitignore
 ├── docs/
-│   └── architecture.md            # 主專案架構規劃（單 repo＋子路徑、四圖、聚合部署）
-├── rdq/                           # RDQ 需求規格卡（保留最新排序規格，舊卡已刪）
-│   └── RDQ-spec-foodmap-sort-20260804.md
-└── foodmap/                       # foodmap 區域地圖分支（獨立 Vite 專案）
+│   └── architecture.md              # 主專案架構規劃（單 repo＋子路徑、四圖、聚合部署）
+├── rdq/                             # RDQ 需求規格卡（保留最新排序規格，舊卡已刪）
+│   ├── RDQ-spec-foodmap-sort-20260804.md
+│   └── RDQ-spec-parking-20260814.md
+└── foodmap/                         # foodmap 區域地圖分支（獨立 Vite 專案）
     ├── README.md                  # 專案版 README（功能／開發指令／env 對照／部署）
     ├── src/                       # mapsLoader、foodSource、components、hooks、utils、lib
     │   ├── lib/firebase.ts        # Firebase 惰性初始化（未設 env 時安全停用）
@@ -59,7 +66,15 @@ oc_maps/
     └── .env.local                 # 本機測試用 API key＋Firebase 設定（gitignored，不入 repo）
 ├── travel/                        # 地圖二：旅遊景點地圖（規劃中，尚未動工）
 ├── facility/                      # 地圖三：公共設施地圖（規劃中，尚未動工）
-└── parking/                       # 地圖四：停車場地圖（規劃中，尚未動工）
+└── parking/                       # 地圖四：停車場地圖（獨立 Vite 專案，已上線）
+    ├── README.md                  # 專案版 README（功能／資料源／開發指令／env 對照／部署）
+    ├── scripts/fetch-availability.mjs  # 三都抓取＋TWD97→WGS84＋正規化（產出 availability.json）
+    ├── public/data/availability.json   # 即時車位靜態檔（定時抓取產出，git 追蹤）
+    ├── src/                       # parkingSource、availability、mapsLoader、components、hooks、utils、lib
+    │   ├── services/availability.ts   # 即時車位載入＋名稱/距離模糊 join
+    │   ├── hooks/useFavorites.ts      # 收藏（collection users/{uid}/parking_favorites）
+    │   └── utils/categoryMap.ts       # 停車場類型分組（公有/立體/平面/停車塔/一般）
+    └── .env.local                 # 本機測試用 API key＋Firebase 設定（gitignored，不入 repo）
 ```
 
 ## 同步層級（本專案初始化至第 3 層級）

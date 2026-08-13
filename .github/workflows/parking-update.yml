@@ -1,0 +1,36 @@
+name: Update parking availability
+
+on:
+  schedule:
+    # 每 15 分鐘抓一次即時車位；資料有變化才 commit（觸發 deploy.yml 重新部署）
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-availability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch availability
+        working-directory: parking
+        run: node scripts/fetch-availability.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "oc-maps-bot"
+          git config user.email "actions@github.com"
+          git add parking/public/data/availability.json
+          if git diff --cached --quiet; then
+            echo "無變化，跳過 commit"
+          else
+            git commit -m "chore(parking): 更新即時車位資料"
+            git push
+          fi

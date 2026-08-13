@@ -8,6 +8,7 @@ on:
       - 'foodmap/**'
       - 'travel/**'
       - 'facility/**'
+      - 'parking/**'
   workflow_dispatch:
 
 permissions:
@@ -39,10 +40,27 @@ jobs:
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
 
+      - name: Build parking
+        working-directory: parking
+        run: |
+          node scripts/fetch-availability.mjs
+          npm ci
+          npm run build
+        env:
+          VITE_GMAPS_KEY: ${{ secrets.VITE_GMAPS_KEY }}
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+
       - name: Aggregate dist for Pages
         run: |
           mkdir -p dist/foodmap
+          mkdir -p dist/parking
           cp -r foodmap/dist/. dist/foodmap/
+          cp -r parking/dist/. dist/parking/
           cp index.html dist/index.html
 
       - name: Configure Pages

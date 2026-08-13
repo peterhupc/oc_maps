@@ -33,12 +33,14 @@ oc_maps/
 ├── firestore.rules / firestore.indexes.json
 ├── rdq/                           # RDQ 需求規格卡（全部地圖共用目錄）
 │   ├── RDQ-spec-foodmap-sort-20260804.md
-│   └── RDQ-spec-travel-*.md / RDQ-spec-facility-*.md   # 未來
-├── .github/workflows/deploy.yml   # 單一部署 workflow：聚合所有地圖 build 成一個 dist
+│   └── RDQ-spec-parking-20260814.md
+├── .github/workflows/
+│   ├── deploy.yml                   # 單一部署 workflow：聚合所有地圖 build 成一個 dist
+│   └── parking-update.yml           # parking 即時車位定時抓取（每 15 分，有變化才 commit）
 ├── foodmap/                       # 地圖一：美食地圖（現有）
 ├── travel/                        # 地圖二：旅遊景點地圖（規劃中，尚未動工）
 ├── facility/                      # 地圖三：公共設施地圖（規劃中，尚未動工）
-└── parking/                       # 地圖四：停車場地圖（規劃中，尚未動工）
+└── parking/                       # 地圖四：停車場地圖（現有）
 ```
 
 ## 4. 部署模型（子路徑遷移）

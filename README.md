@@ -7,7 +7,7 @@
 | 地圖 | 網址 | 狀態 | 說明 |
 |------|------|------|------|
 | 食圖 FoodMap | https://peterhupc.github.io/oc_maps/foodmap/ | 已上線 | 美食搜尋、25 類分組、收藏（跨裝置 Firebase 同步）、排序 |
-| 停車場 Parking | （規劃中） | 規劃中 | 停車場地圖（尚未動工） |
+| 停車場 Parking | https://peterhupc.github.io/oc_maps/parking/ | 已上線 | 北台三都（臺北／新北／桃園）停車場即時車位、收費、收藏同步 |
 
 ## 架構
 
@@ -17,6 +17,6 @@
 
 ## 開發
 
-每張地圖資料夾內有各自的 README，含功能、開發指令與 env 對照（例如 [foodmap/README.md](foodmap/README.md)）。
+每張地圖資料夾內有各自的 README，含功能、開發指令與 env 對照（例如 [foodmap/README.md](foodmap/README.md)、[parking/README.md](parking/README.md)）。
 
 跨 Agent 工作約定與進度追蹤：`AGENTS.md`＋`handoff.md`。
