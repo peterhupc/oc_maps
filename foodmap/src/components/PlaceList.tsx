@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { FoodPlace, SortOption, SortOrigin } from '../types/food'
 import type { FavoriteItem } from '../hooks/useFavorites'
@@ -32,10 +32,17 @@ function PlaceCard({
   onSelect: (place: FoodPlace) => void
 }) {
   const { t } = useTranslation()
+  const [imgError, setImgError] = useState(false)
+  const photo = place.photos?.[0]
   return (
     <li className="place-card" onClick={() => onSelect(place)}>
-      {place.photos?.[0] ? (
-        <img src={place.photos[0]} alt={place.name} loading="lazy" />
+      {photo && !imgError ? (
+        <img
+          src={photo}
+          alt={place.name}
+          loading="lazy"
+          onError={() => setImgError(true)}
+        />
       ) : (
         <div className="no-photo">{t('list.noPhotos')}</div>
       )}

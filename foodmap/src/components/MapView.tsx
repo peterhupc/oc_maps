@@ -33,7 +33,7 @@ function infoContent(place: FoodPlace): string {
   if (place.opening_hours?.open_now != null) meta.push(place.opening_hours.open_now ? '營業中' : '已打烊')
   return (
     `<div style="min-width:180px;max-width:240px;">` +
-    (photo ? `<img src="${photo}" alt="" style="width:100%;height:96px;object-fit:cover;border-radius:8px;margin-bottom:6px;"/>` : '') +
+    (photo ? `<img src="${photo}" alt="" onerror="this.style.display='none'" style="width:100%;height:96px;object-fit:cover;border-radius:8px;margin-bottom:6px;"/>` : '') +
     `<strong>${place.name}</strong>` +
     (meta.length ? `<div style="color:#6c757d;font-size:12px;margin-top:2px;">${meta.join(' · ')}</div>` : '') +
     `</div>`
