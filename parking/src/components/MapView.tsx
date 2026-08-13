@@ -6,6 +6,7 @@ interface MapViewProps {
   center: { lat: number; lng: number }
   places: ParkingPlace[]
   selectedId: string | null
+  selectedPlace: ParkingPlace | null
   onSelect: (place: ParkingPlace) => void
   onCenterChange: (c: { lat: number; lng: number }) => void
 }
@@ -54,14 +55,13 @@ function infoContent(place: ParkingPlace): string {
   )
 }
 
-export default function MapView({ center, places, selectedId, onSelect, onCenterChange }: MapViewProps) {
+export default function MapView({ center, places, selectedId, selectedPlace, onSelect, onCenterChange }: MapViewProps) {
   const ref = useRef<HTMLDivElement>(null)
   const mapRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<{ id: string; marker: google.maps.Marker }[]>([])
   const infoRef = useRef<google.maps.InfoWindow | null>(null)
-  const placesRef = useRef<ParkingPlace[]>([])
+  const tempMarkerRef = useRef<google.maps.Marker | null>(null)
   const [mapReady, setMapReady] = useState(false)
-  placesRef.current = places
 
   useEffect(() => {
     let cancelled = false
@@ -132,20 +132,35 @@ export default function MapView({ center, places, selectedId, onSelect, onCenter
     const info = infoRef.current
     if (!map || !info || !mapReady) return
 
-    if (!selectedId) {
+    if (tempMarkerRef.current) {
+      tempMarkerRef.current.setMap(null)
+      tempMarkerRef.current = null
+    }
+
+    if (!selectedPlace) {
       info.close()
       return
     }
 
-    const found = markersRef.current.find((m) => m.id === selectedId)
-    if (!found) return
-    const place = placesRef.current.find((p) => p.place_id === selectedId)
-    if (!place) return
-    map.panTo(found.marker.getPosition() ?? center)
-    info.setContent(infoContent(place))
-    info.open({ map, anchor: found.marker })
+    const found = markersRef.current.find((m) => m.id === selectedPlace.place_id)
+    if (found) {
+      map.panTo(found.marker.getPosition() ?? selectedPlace.location)
+      info.setContent(infoContent(selectedPlace))
+      info.open({ map, anchor: found.marker })
+    } else {
+      const marker = new google.maps.Marker({
+        map,
+        position: selectedPlace.location,
+        title: selectedPlace.name,
+        icon: PIN_ICON_ACTIVE,
+      })
+      tempMarkerRef.current = marker
+      map.panTo(selectedPlace.location)
+      info.setContent(infoContent(selectedPlace))
+      info.open({ map, anchor: marker })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId, mapReady])
+  }, [selectedPlace, mapReady])
 
   return <div ref={ref} className="map-canvas" />
 }

@@ -21,6 +21,7 @@ export default function App() {
 
   const [center, setCenter] = useState(DEFAULT_CENTER)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedPlace, setSelectedPlace] = useState<ParkingPlace | null>(null)
   const [listView, setListView] = useState<ListView>('all')
   const [sort, setSort] = useState<SortOption>('default')
   const [distanceOrigin, setDistanceOrigin] = useState<SortOrigin>(DEFAULT_CENTER)
@@ -44,6 +45,7 @@ export default function App() {
       setCenter(loc)
       setFilters(next)
       setSelectedId(null)
+      setSelectedPlace(null)
       await search(next)
     },
     [search]
@@ -53,6 +55,7 @@ export default function App() {
     (next: FilterState) => {
       setFilters(next)
       setSelectedId(null)
+      setSelectedPlace(null)
       if (next.center) void search(next)
     },
     [search]
@@ -60,6 +63,7 @@ export default function App() {
 
   const handleSelect = useCallback((place: ParkingPlace) => {
     setSelectedId(place.place_id)
+    setSelectedPlace(place)
   }, [])
 
   const onMapMove = useCallback(
@@ -67,6 +71,7 @@ export default function App() {
       const next: FilterState = { ...filtersRef.current, center: c }
       setFilters(next)
       setSelectedId(null)
+      setSelectedPlace(null)
       if (moveTimerRef.current) window.clearTimeout(moveTimerRef.current)
       moveTimerRef.current = window.setTimeout(() => void search(next), MAP_MOVE_DEBOUNCE_MS)
     },
@@ -134,6 +139,7 @@ export default function App() {
             center={center}
             places={places}
             selectedId={selectedId}
+            selectedPlace={selectedPlace}
             onSelect={handleSelect}
             onCenterChange={onMapMove}
           />
