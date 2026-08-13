@@ -44,7 +44,6 @@
 
 - 時間：2026-08-14
 - 更新者：opencode @ PBHOME-X1G12
-- Git push：✅ 已推（4cc9f56 收藏定位、b80e7b9 縮圖佔位、3d61efd 縮圖自動刷新）
-- 本次收工同步：AGENTS.md＋handoff.md 更新（待 commit＋push）
+- Git push：✅ 已推（4cc9f56 收藏定位、b80e7b9 縮圖佔位、3d61efd 縮圖自動刷新、737da89 收工 docs）
 - Foodmap 狀態：🟢 功能完工、🟢 收藏定位完工、🟢 縮圖自動刷新完工、🟢 已部署上線
 - Parking 狀態：🟢 首版已上線、🟢 收藏定位完工
